@@ -2,7 +2,7 @@
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
 import { sql } from "drizzle-orm";
-import { index, pgTableCreator, pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
+import { index, pgTableCreator, pgTable, text, timestamp, boolean, serial, integer, pgEnum } from "drizzle-orm/pg-core";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -10,6 +10,14 @@ import { index, pgTableCreator, pgTable, text, timestamp, boolean } from "drizzl
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
+
+
+// ENUMS
+const todoStatus = pgEnum("todo_status",["pending", "completed"])
+const priority = pgEnum("priority",["low", "medium", "high"])
+
+
+//SCHEMAS
 export const createTable = pgTableCreator((name) => `tadoo_${name}`);
 
 export const user = pgTable("user", {
@@ -72,3 +80,18 @@ export const verification = pgTable("verification", {
   ),
 });
 
+export const tasks = createTable("tasks",{
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  description: text("description"),
+  dueDate: timestamp("due_date"),
+  userId: text("user_id").references(()=>user.id,{onDelete:"cascade"}),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().$onUpdate(() => new Date()),
+  todoStatus: todoStatus("todo_status").default("pending"),
+  priority: priority("priority").default("medium"),
+  tags: text("tags").array()
+},
+(t)=>({
+  userIdIndex: index("user_id_index").on(t.userId),
+}))
