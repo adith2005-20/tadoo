@@ -6,6 +6,8 @@ import { Rubik } from "next/font/google";
 import { TRPCReactProvider } from "@/trpc/react";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "./providers";
+import Header from "./_components/Header";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   title: "Tadoo",
@@ -23,10 +25,20 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${rubik.variable}`}>
+    <html lang="en" className={`${rubik.variable} antialiased`} suppressHydrationWarning>
       <body>
         <TRPCReactProvider>
-          <Providers>{children}</Providers>
+          <Providers>
+            <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+            >
+              <Header/>
+              {children}
+            </ThemeProvider>
+            </Providers>
           <Toaster position="bottom-right"/>
         </TRPCReactProvider>
       </body>
