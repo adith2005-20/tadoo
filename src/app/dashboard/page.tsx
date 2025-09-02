@@ -17,7 +17,7 @@ export default async function Page() {
     void api.task.getTasks.prefetch();
 
     return (
-        <div className="bg-background">
+        <div className="bg-background min-h-screen">
             <Suspense fallback={<Loader/>}>
                 <Dashboard/>
             </Suspense>

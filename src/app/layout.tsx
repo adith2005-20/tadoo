@@ -7,12 +7,13 @@ import { TRPCReactProvider } from "@/trpc/react";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "./providers";
 import Header from "./_components/Header";
+import Footer from "./_components/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   title: "Tadoo",
   description: "Simple todo app",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: [{ rel: "icon", url: "/tadoo.svg" }],
 };
 
 const rubik = Rubik({
@@ -37,6 +38,7 @@ export default function RootLayout({
             >
               <Header/>
               {children}
+              <Footer/>
             </ThemeProvider>
             </Providers>
           <Toaster position="bottom-right"/>

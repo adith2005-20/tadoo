@@ -20,6 +20,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { api } from "@/trpc/react";
 import { ModeToggle } from "@/components/ThemeButton";
+import { Separator } from "@/components/ui/separator";
 
 export default function Header() {
   const { data: session, isPending } = useSession();
@@ -50,11 +51,11 @@ export default function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-50 h-1/12 w-full bg-black/40 py-4 backdrop-blur-md`}
+      className={`sticky top-0 z-50 w-full dark:bg-background/40 bg-background pt-4 backdrop-blur-md`}
     >
       <div className="mx-4 flex items-center justify-between gap-4">
         <Link href={"/"}>
-          <Image src="/tadoo.svg" width={80} height={80} alt="Tadoo Logo" />
+          <span className="text-4xl font-bold">tadoo!</span>
         </Link>
 
         <div className="flex gap-4 place-self-end">
@@ -81,9 +82,6 @@ export default function Header() {
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="mx-8">
-                <DropdownMenuItem>
-                  <ModeToggle/>
-                </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleSignOut()}>
                   <span className="text-destructive">Sign out</span>
                 </DropdownMenuItem>
@@ -92,6 +90,7 @@ export default function Header() {
           </SignedIn>
         </div>
       </div>
+      <Separator className="mt-4"/>
     </header>
   );
 }
