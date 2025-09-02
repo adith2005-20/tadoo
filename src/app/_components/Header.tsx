@@ -71,7 +71,7 @@ export default function Header() {
         <SignedIn>
           <Avatar>
             <AvatarFallback>{getUserInitials()}</AvatarFallback>
-            <AvatarImage src={session?.user?.image as string} />
+            {session?.user.image && <AvatarImage src={session.user.image} />}
           </Avatar>
         </SignedIn>
         </div>
