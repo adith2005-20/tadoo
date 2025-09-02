@@ -35,6 +35,7 @@ export const taskRouter = createTRPCRouter({
         const selfTasks = await db.select()
         .from(tasks)
         .where(eq(tasks.userId,ctx.userId))
+        return selfTasks;
     }),
     updateTaskTodoStatus: protectedProcedure
     .input(z.object({
@@ -61,7 +62,7 @@ export const taskRouter = createTRPCRouter({
         return {
             success: true,
             message: "Task stsatus updated successfully",
-            task: updatedTask
+            task: updatedTask[0]
         };
     })
 })

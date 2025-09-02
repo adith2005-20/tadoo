@@ -19,7 +19,7 @@ const Landing = () => {
           </p>
         </div>
         <div className="flex-shrink-0">
-            <Link href={'/auth/sign-in'}>
+            <Link href={'/dashboard'}>
             <Button 
             size="lg"
             className='px-12 py-8 text-xl font-semibold hover:cursor-pointer' 

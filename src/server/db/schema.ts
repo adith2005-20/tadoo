@@ -13,8 +13,8 @@ import { index, pgTableCreator, pgTable, text, timestamp, boolean, serial, integ
 
 
 // ENUMS
-const todoStatus = pgEnum("todo_status",["pending", "completed"])
-const priority = pgEnum("priority",["low", "medium", "high"])
+export const todoStatus = pgEnum("todo_status",["pending", "completed"])
+export const priority = pgEnum("priority",["low", "medium", "high"])
 
 
 //SCHEMAS

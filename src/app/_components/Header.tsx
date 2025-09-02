@@ -18,7 +18,8 @@ import { SignedIn, SignedOut } from "@daveyplate/better-auth-ui";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
+import { api } from "@/trpc/react";
+import { ModeToggle } from "@/components/ThemeButton";
 
 export default function Header() {
   const { data: session, isPending } = useSession();
@@ -26,7 +27,6 @@ export default function Header() {
   const isAuthenticated = session?.user;
   const isLoading = isPending;
   const router = useRouter();
-
 
   // Get user initials for avatar
   const getUserInitials = () => {
@@ -42,6 +42,7 @@ export default function Header() {
   const handleSignOut = async () => {
     try {
       await signOut();
+      router.push("/");
     } catch (error) {
       console.error("Failed to sign out:", error);
     }
@@ -49,31 +50,46 @@ export default function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full bg-black/40 py-4 backdrop-blur-md h-1/12`}
+      className={`sticky top-0 z-50 h-1/12 w-full bg-black/40 py-4 backdrop-blur-md`}
     >
-      <div className="flex gap-4 mx-4 justify-between items-center">
-        <Link href={'/'}>
-            <Image src="/tadoo.svg" width={80} height={80} alt="Tadoo Logo" />
+      <div className="mx-4 flex items-center justify-between gap-4">
+        <Link href={"/"}>
+          <Image src="/tadoo.svg" width={80} height={80} alt="Tadoo Logo" />
         </Link>
-        
+
         <div className="flex gap-4 place-self-end">
-          {isPending && <LoaderCircleIcon className="h-6 w-6 animate-spin"/>}
-        <SignedOut>
-                <Button onClick={() => router.push("/auth/sign-up")}>
-                    Sign up
-                </Button>
-                <Button variant={"outline"} onClick={()=>router.push("/auth/sign-in")}>
-                    Log in
-                </Button>
-            
-            
-        </SignedOut>
-        <SignedIn>
-          <Avatar>
-            <AvatarFallback>{getUserInitials()}</AvatarFallback>
-            {session?.user.image && <AvatarImage src={session.user.image} />}
-          </Avatar>
-        </SignedIn>
+          {isPending && <LoaderCircleIcon className="h-6 w-6 animate-spin" />}
+          <SignedOut>
+            <Button onClick={() => router.push("/auth/sign-up")}>
+              Sign up
+            </Button>
+            <Button
+              variant={"outline"}
+              onClick={() => router.push("/auth/sign-in")}
+            >
+              Log in
+            </Button>
+          </SignedOut>
+          <SignedIn>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Avatar>
+                  <AvatarFallback>{getUserInitials()}</AvatarFallback>
+                  {session?.user.image && (
+                    <AvatarImage src={session.user.image} />
+                  )}
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="mx-8">
+                <DropdownMenuItem>
+                  <ModeToggle/>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleSignOut()}>
+                  <span className="text-destructive">Sign out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SignedIn>
         </div>
       </div>
     </header>

@@ -9,10 +9,8 @@ const Loader = () => {
       <div className='bg-background rounded-xl size-16 backdrop-blur-lg flex items-center justify-center border-foreground border-2 p-2'>
         <LoaderCircleIcon className='animate-spin'/>
       </div>
-      
     </div>
   )
 }
-
 
 export default Loader
