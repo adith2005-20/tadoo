@@ -64,5 +64,23 @@ export const taskRouter = createTRPCRouter({
             message: "Task stsatus updated successfully",
             task: updatedTask[0]
         };
-    })
+    }),
+    deleteTask: protectedProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+        const taskToDelete = await db.select({ id: tasks.id })
+            .from(tasks)
+            .where(and(eq(tasks.id, input.id), eq(tasks.userId, ctx.userId)));
+
+        if (taskToDelete.length === 0) {
+            throw new Error("Task not found or you're not authorized to delete it.");
+        }
+
+        await db.delete(tasks).where(eq(tasks.id, input.id));
+
+        return {
+            success: true,
+            message: "Task deleted successfully",
+        };
+    }),
 })
